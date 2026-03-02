@@ -1,0 +1,98 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ── Casos ────────────────────────────────────────────
+model Case {
+  id                String    @id @default(uuid())
+  status            String    @default("intake")
+  // intake → triagem → processamento → revisao → concluido
+
+  // Dados do intake (preenchidos pelo operador)
+  clientName        String    @map("client_name")
+  clientNationality String?   @map("client_nationality")
+  factsSummary      String    @map("facts_summary") @db.Text
+  factsDetailed     Json?     @map("facts_detailed")
+  documentsRef      String?   @map("documents_ref") @db.Text
+  urgency           String    @default("normal")
+  // normal | urgente | muito_urgente
+
+  // Resultado da triagem (preenchido pelo Agente 1)
+  legalArea         String?   @map("legal_area")
+  actionType        String?   @map("action_type")
+  jurisdiction      String?   @map("jurisdiction")
+  applicableRights  Json?     @map("applicable_rights")
+  triageReasoning   String?   @map("triage_reasoning") @db.Text
+
+  // Metadata
+  createdBy         String    @map("created_by")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  // Relações
+  agentRuns         AgentRun[]
+  generatedDocs     GeneratedDoc[]
+
+  @@map("cases")
+}
+
+// ── Execuções de Agentes ─────────────────────────────
+model AgentRun {
+  id          String    @id @default(uuid())
+  caseId      String    @map("case_id")
+  agentName   String    @map("agent_name")
+  // orchestrator | triage | legislation | jurisprudence
+  // | argumentation | drafting | review
+  agentOrder  Int       @map("agent_order")
+  status      String    @default("pending")
+  // pending → running → completed → failed
+
+  input       Json?
+  output      Json?
+  reasoning   String?   @db.Text
+  tokensUsed  Int?      @map("tokens_used")
+  durationMs  Int?      @map("duration_ms")
+  errorMsg    String?   @map("error_msg") @db.Text
+  model       String?
+
+  startedAt   DateTime? @map("started_at")
+  completedAt DateTime? @map("completed_at")
+  createdAt   DateTime  @default(now()) @map("created_at")
+
+  case        Case      @relation(fields: [caseId], references: [id])
+
+  @@index([caseId])
+  @@index([agentName])
+  @@map("agent_runs")
+}
+
+// ── Documentos Gerados ───────────────────────────────
+model GeneratedDoc {
+  id          String   @id @default(uuid())
+  caseId      String   @map("case_id")
+  docType     String   @map("doc_type")
+  // peca_principal | requerimento | procuracao | docs_anexos
+  version     Int      @default(1)
+  title       String
+  content     String   @db.Text
+  // Conteúdo markdown intermédio (antes de gerar .docx)
+  filePath    String?  @map("file_path")
+  // Caminho do .docx gerado
+
+  // Rastreio de fontes usadas
+  sourcesUsed Json?    @map("sources_used")
+  // Array de { type, documentId, url, excerpt }
+
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  case        Case     @relation(fields: [caseId], references: [id])
+
+  @@index([caseId])
+  @@map("generated_docs")
+}
