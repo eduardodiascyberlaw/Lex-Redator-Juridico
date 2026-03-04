@@ -1,4 +1,4 @@
-# Regras + SECURITY GATE Completo
+# LexBuild — Regras + SECURITY GATE Completo
 ## Comandos
 npm run dev  npm run build  npm run test  npm run lint
 ## Estilo OBRIGATÓRIO

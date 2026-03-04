@@ -16,9 +16,9 @@ const App = () => {
       <header className="border-b border-gray-200 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold text-gray-900">
-              Lex Redator Juridico
-            </h1>
+            <a href="/" className="flex items-center gap-3">
+              <img src="/logo.png" alt="LexBuild" className="h-20 w-auto" />
+            </a>
             <span className="text-sm text-gray-500">v1.0.0</span>
           </div>
         </div>
@@ -38,7 +38,7 @@ const App = () => {
       <footer className="border-t border-gray-200 bg-white mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <p className="text-sm text-gray-500 text-center">
-            Lex Redator Juridico &mdash; Sistema de Agentes de IA para Pecas Processuais
+            LexBuild &mdash; Sistema de Agentes de IA para Pe&ccedil;as Processuais
           </p>
         </div>
       </footer>

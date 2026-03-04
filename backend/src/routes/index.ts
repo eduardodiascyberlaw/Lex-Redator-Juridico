@@ -15,7 +15,7 @@ router.get("/health", async (_req, res) => {
 
   res.json({
     success: true,
-    message: "Lex Redator API operacional",
+    message: "LexBuild API operacional",
     timestamp: new Date().toISOString(),
     services: {
       lexCorpus: lexCorpusOk ? "online" : "offline",

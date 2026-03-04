@@ -1,7 +1,7 @@
 {
-  "name": "lex-redator-backend",
+  "name": "lexbuild-backend",
   "version": "1.0.0",
-  "description": "Lex Redator Jurídico — Motor de agentes de IA para geração de peças processuais",
+  "description": "LexBuild — Motor de agentes de IA para geração de peças processuais",
   "main": "dist/server.js",
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts",

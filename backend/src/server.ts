@@ -34,9 +34,9 @@ app.use(errorHandler);
 
 // Iniciar servidor
 app.listen(config.port, () => {
-  console.log(`[Lex Redator] API a correr na porta ${config.port}`);
-  console.log(`[Lex Redator] Ambiente: ${config.nodeEnv}`);
-  console.log(`[Lex Redator] Lex-Corpus API: ${config.lexCorpus.apiUrl}`);
+  console.log(`[LexBuild] API a correr na porta ${config.port}`);
+  console.log(`[LexBuild] Ambiente: ${config.nodeEnv}`);
+  console.log(`[LexBuild] Lex-Corpus API: ${config.lexCorpus.apiUrl}`);
 });
 
 export default app;
